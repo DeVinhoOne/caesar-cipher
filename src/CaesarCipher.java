@@ -27,19 +27,22 @@ public class CaesarCipher {
         return encrypted.toString();
     }
 
+    public StringBuilder halfOfString(String message, int start) {
+        StringBuilder half = new StringBuilder();
+        for (int i = start; i < message.length(); i += 2) {
+            char ch = message.charAt(i);
+            half.append(ch);
+        }
+        return half;
+    }
+
     public String encryptTwoKeys(String input, int key1, int key2) {
         //key1 encrypts letters which are located on ODD positions in input
         //key2 encrypts letters which are located on EVEN positions in input
         StringBuilder encrypted = new StringBuilder(input);
-        StringBuilder encryptedOdd = new StringBuilder();
-        StringBuilder encryptedEven = new StringBuilder();
-        //create two stringbuilders based on location (odd or even) in provided string
-        for (int i = 0; i < encrypted.length(); i += 2) {
-            encryptedOdd.append(encrypted.charAt(i));
-        }
-        for (int i = 1; i < encrypted.length(); i += 2) {
-            encryptedEven.append(encrypted.charAt(i));
-        }
+        StringBuilder encryptedOdd = halfOfString(input, 0);
+        StringBuilder encryptedEven = halfOfString(input, 1);
+
         //encrypt both strings with appropriate key
         encryptedOdd = new StringBuilder(encrypt(encryptedOdd.toString(), key1));
         encryptedEven = new StringBuilder(encrypt(encryptedEven.toString(), key2));
@@ -80,10 +83,10 @@ public class CaesarCipher {
     }
 
     public void testEncryptTwoKeys() {
-        String msg = "First Legion";
-        int key1 = 23;
-        int key2 = 17;
-        String encrypted = encryptTwoKeys(msg, key1, key2);
+        String msg = "Top ncmy qkff vi vguv vbg ycpx";
+        int key1 = 2;
+        int key2 = 20;
+        String encrypted = msg;
         System.out.println("[ENCRYPTED] " + encrypted);
         System.out.println("[DECRYPTED] " + encryptTwoKeys(encrypted, 26 - key1, 26 - key2));
     }
